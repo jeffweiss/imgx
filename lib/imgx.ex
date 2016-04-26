@@ -1,6 +1,8 @@
 defmodule Imgx do
 
-  def header_sequence(), do: <<27, 93, 49, 51, 51, 55, 59>>
+  def header_sequence(<<"screen",_::bitstring>>), do: "\ePtmux;\e\e]1337;"
+  def header_sequence(_), do: "\e]1337;"
+
   def file_data(filename) do
     name = Base.encode64(filename)
     data =
@@ -9,10 +11,12 @@ defmodule Imgx do
       |> Base.encode64
     "File=name=#{name};inline=1:#{data}"
   end
-  def footer_sequence(), do: "\a"
+  def footer_sequence(<<"screen",_::bitstring>>), do: "\a\e\\"
+  def footer_sequence(_), do: "\a"
 
   def display_image(filename) do
-    header_sequence <> file_data(filename) <> footer_sequence
+    term = System.get_env("TERM")
+    header_sequence(term) <> file_data(filename) <> footer_sequence(term)
     |> IO.puts
   end
 
