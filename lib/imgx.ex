@@ -13,10 +13,12 @@ defmodule Imgx do
 
   def display_image(filename) do
     header_sequence <> file_data(filename) <> footer_sequence
+    |> IO.puts
   end
 
-  def main(_) do
-    display_image("he-man.jpg")
-    |> IO.puts
+  def main(args) do
+    for file <- args do
+      display_image(file)
+    end
   end
 end
