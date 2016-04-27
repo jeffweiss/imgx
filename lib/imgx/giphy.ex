@@ -2,26 +2,19 @@ defmodule Imgx.Giphy do
   use HTTPoison.Base
 
   def search(term, options \\ []) do
-    query = 
-      [q: term] ++ options
-      |> URI.encode_query
-    get!("/gifs/search?#{query}")
-    |> process_response
+    request("/gifs/search", [q: term] ++ options)
   end
 
   def translate(term, options \\ []) do
-    query = 
-      [s: term] ++ options
-      |> URI.encode_query
-    get!("/gifs/translate?#{query}")
-    |> process_response
+    request("/gifs/translate", [s: term] ++ options)
   end
 
   def random(options \\ []) do
-    query =
-      options
-      |> URI.encode_query
-    get!("/gifs/random?#{query}")
+    request("/gifs/random", options)
+  end
+
+  defp request(uri, params) do
+    get!(uri <> "?" <> URI.encode_query(params))
     |> process_response
   end
 
