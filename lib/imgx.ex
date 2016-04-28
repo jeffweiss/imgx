@@ -27,12 +27,22 @@ defmodule Imgx do
   end
 
   def main(args) do
-    file_url =
-      Imgx.Giphy.random([tag: Enum.join(args, " "), api_key: "dc6zaTOxFJmzC", rating: "g"])
-      |> Map.get("data")
-      |> Map.get("image_url")
+    {options, args, _unknowns} = OptionParser.parse(args, strict: [rating: :string, file: :string], aliases: [f: :file, r: :rating])
+    |> IO.inspect
+    options
+    |> Keyword.get(:file)
+    |> case do
+      nil ->
+        rating = Keyword.get(options, :rating, "g")
+        file_url =
+          Imgx.Giphy.random([tag: Enum.join(args, " "), api_key: "dc6zaTOxFJmzC", rating: rating])
+          |> Map.get("data")
+          |> Map.get("image_url")
 
-    display_image(file_url, &retrieve_from_url/1)
-    IO.puts file_url
+        display_image(file_url, &retrieve_from_url/1)
+        IO.puts file_url
+      file ->
+        display_image(file, &File.read!/1)
+    end
   end
 end
