@@ -28,7 +28,6 @@ defmodule Imgx do
 
   def main(args) do
     {options, args, _unknowns} = OptionParser.parse(args, strict: [rating: :string, file: :string], aliases: [f: :file, r: :rating])
-    |> IO.inspect
     options
     |> Keyword.get(:file)
     |> case do
