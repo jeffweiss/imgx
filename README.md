@@ -1,20 +1,22 @@
 # Imgx
 
-**TODO: Add description**
+Imgx is a personal experiment to what it would take to display images inline in
+[iTerm 2.9+](https://www.iterm2.com/images.html) using Elixir. As a side result
+(I have yet to judge if great or terrible), you may now embed images (and
+animated gifs) into git commits.
 
-## Installation
+```shell
+$ ./imgx <giphy_search_terms> | git commit --allow-empty -F -
+```
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
+## Build
 
-  1. Add imgx to your list of dependencies in `mix.exs`:
+You'll require Erlang and Elixir.
 
-        def deps do
-          [{:imgx, "~> 0.0.1"}]
-        end
-
-  2. Ensure imgx is started before your application:
-
-        def application do
-          [applications: [:imgx]]
-        end
+```shell
+$ mix deps.get
+$ mix compile
+$ mix escript.build
+$ ./imgx funny cat
+```
 
